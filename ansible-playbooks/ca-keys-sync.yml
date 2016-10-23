@@ -1,0 +1,8 @@
+---
+- name: Role for sync CA keys signing ca.pub and revoked-keys files through remote hosts
+  hosts: all
+  remote_user: root
+  become: true
+
+  roles:
+    - ca-keys-sync

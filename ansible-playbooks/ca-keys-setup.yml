@@ -1,0 +1,9 @@
+---
+- name: Roles for the CA key signing setup on remote hosts
+  hosts: all
+  remote_user: root
+  become: true
+
+  roles:
+    - ca-keys-setup
+

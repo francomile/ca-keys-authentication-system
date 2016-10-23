@@ -1,0 +1,15 @@
+---
+# CA SSH Files Sync
+# This playbook will sync the relevant files for the ssh authentication implementation.
+# The file `ca.pub` is for key aceptance and the `revoked-keys` file is for syncync al the revoked public keys through the infrastructure.
+# This playbook can only be run after initial CA setup ansible playbook (ca_setup.yml) have been run on all destination servers.
+
+- name: Sync files through all servers
+  synchronize: src=/etc/ssh/{{ item.src }} dest=/etc/ssh/{{ item.dest }}
+  with_items:
+    - { src: 'ca.pub', dest: 'ca.pub' }
+    - { src: 'revoked-keys', dest: 'revoked-keys' }
+
+
+- name: Restart SSH service
+  service: name=ssh state=restarted

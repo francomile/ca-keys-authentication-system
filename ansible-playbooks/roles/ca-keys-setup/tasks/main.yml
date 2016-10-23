@@ -1,0 +1,35 @@
+---
+# CA Authentication Setup
+# This playbook will setup sshd_config and the relevant files for the CA signed ssh authentication.
+
+- name: Create auth_principals dir for the user´s files containing authorized zones
+  file: path=/etc/ssh/auth_principals state=directory group=root owner=root mode=0755
+
+- name: Create auth_principals user´s files for authorized zones
+  file: path=/etc/ssh/auth_principals/{{ item }} group=root owner=root mode=0644 state=touch
+  with_items:
+    - www-data
+    - dbmaster
+    - admin
+
+- name: Set sshd_config file
+  blockinfile:
+    dest: /etc/ssh/sshd_config
+    insertafter: EOF
+    block: |
+      AuthorizedPrincipalsFile /etc/ssh/auth_principals/%u
+      TrustedUserCAKeys /etc/ssh/ca.pub
+      RevokedKeys /etc/ssh/revoked-keys
+
+- name: Sync files through servers
+  synchronize: src=/etc/ssh/{{ item.src }} dest=/etc/ssh/{{ item.dest }}
+  with_items:
+    - { src: 'ca.pub', dest: 'ca.pub' }
+    - { src: 'revoked-keys', dest: 'revoked-keys' }
+
+
+- name: Restart SSH service
+  service: name=ssh state=restarted
+
+
+
