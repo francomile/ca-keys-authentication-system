@@ -51,7 +51,7 @@ echo ""
 
 
 # Install some packages
-cecho "======> Installing some usefull packages ..." $green
+cecho "======> Installing some useful packages ..." $green
 apt-get update && apt-get upgrade -y
 apt-get install curl wget python-software-properties vim dnsutils build-essential git bash-completion git-extras rsync
 
@@ -93,7 +93,7 @@ cp -r ${playbooks}/*  $play_path
 
 
 # Generate CA key
-cecho "======> Generation CA keys for signing your SSH public keys..." $green
+cecho "======> Generating CA keys for signing your SSH public keys..." $green
 /usr/bin/ssh-keygen -C CA -f ${key_signer}/ca -q -N ""
 if [ "$?" -eq 0 ]; then
         cecho "======> The new ca signing key was successfuly created" $green
