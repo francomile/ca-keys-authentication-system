@@ -89,7 +89,7 @@ done
 
 # Install the Ansible roles
 cecho "======> Installing the Ansible roles in /opt/ansible ..." $green
-cp -r $playbooks/*  $play_path
+cp -r ${playbooks}/*  $play_path
 
 
 # Generate CA key
